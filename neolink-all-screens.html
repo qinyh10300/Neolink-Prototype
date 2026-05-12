@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neolink — All Screens</title>
+<style>
+/* ============================================================
+   Neolink Mobile App Prototype — Design Canvas
+   ============================================================ */
+
+:root {
+  /* Canvas */
+  --bg: #F4F3F0;
+  --screen-bg: #FAFAF8;
+
+  /* Brand */
+  --primary: #6FAF7B;
+  --primary-dark: #4D8F5C;
+  --primary-soft: #EAF6EE;
+
+  /* Text */
+  --text: #1F2933;
+  --text-sub: #8A8F98;
+  --text-faint: #B6BAC1;
+
+  /* Surfaces */
+  --divider: #ECEDEA;
+  --card: #FFFFFF;
+  --surface-soft: #F7F7F4;
+
+  /* Accents */
+  --pink: #F4D6E6;
+  --pink-text: #B05A86;
+  --beige: #F6EFD9;
+  --beige-text: #9C7B30;
+  --blue: #DCEBFA;
+  --blue-text: #4078B0;
+
+  /* Agent (AI-触发元素的标记色) */
+  --agent-purple: #E8E2F5;
+  --agent-purple-text: #6E5BA8;
+  --agent-teal: #D8ECE9;
+  --agent-teal-text: #2D7A6E;
+
+  /* Shadow */
+  --shadow: 0 4px 14px rgba(31, 41, 51, 0.04);
+  --shadow-md: 0 8px 24px rgba(31, 41, 51, 0.06);
+  --shadow-lg: 0 16px 40px rgba(31, 41, 51, 0.08);
+
+  /* Radius */
+  --r-card: 20px;
+  --r-card-lg: 24px;
+  --r-btn: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+html, body { background: var(--bg); }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'PingFang SC', 'Helvetica Neue', sans-serif;
+  color: var(--text);
+  padding: 64px 40px 80px;
+  min-height: 100vh;
+  letter-spacing: -0.005em;
+}
+
+/* ===== Canvas Header ===== */
+.canvas-header { text-align: center; margin-bottom: 56px; }
+.canvas-header .eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: var(--primary-soft);
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.canvas-header h1 {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+.canvas-header p {
+  font-size: 15px;
+  color: var(--text-sub);
+  margin-top: 10px;
+}
+
+/* ===== Canvas Layout ===== */
+.canvas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 64px 40px;
+  justify-content: center;
+  max-width: 1840px;
+  margin: 0 auto;
+}
+
+.artboard { display: flex; flex-direction: column; align-items: center; }
+.artboard-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
+  margin-bottom: 18px;
+  letter-spacing: 0.02em;
+}
+.artboard-label .num {
+  color: var(--primary);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+/* ===== Phone Frame ===== */
+.phone-frame {
+  width: 375px;
+  height: 812px;
+  background: var(--screen-bg);
+  border-radius: 44px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(31, 41, 51, 0.04);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* iOS Status Bar */
+.status-bar {
+  height: 44px;
+  padding: 14px 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.status-bar .time { font-variant-numeric: tabular-nums; }
+.status-bar .right { display: flex; align-items: center; gap: 5px; color: var(--text); }
+
+/* Phone screen content area */
+.phone-screen {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px 20px 12px;
+  scrollbar-width: none;
+}
+.phone-screen::-webkit-scrollbar { display: none; }
+
+/* Tab Bar */
+.tab-bar {
+  height: 83px;
+  padding: 8px 8px 28px;
+  background: rgba(250, 250, 248, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--divider);
+  display: flex;
+  flex-shrink: 0;
+}
+.tab-bar .tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+.tab-bar .tab.active { color: var(--primary); }
+.tab-bar .tab svg { width: 24px; height: 24px; }
+
+/* ===== App Header ===== */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 4px 8px;
+}
+.app-header .brand {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.app-header .brand .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.app-header .page-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.app-header .icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+/* ===== Greeting Block ===== */
+.greeting { padding: 6px 4px 14px; }
+.greeting h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+.greeting p { font-size: 13px; color: var(--text-sub); }
+
+/* ===== Card ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--r-card);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+.card.lg { border-radius: var(--r-card-lg); padding: 18px; }
+.card.flat { box-shadow: none; border: 1px solid var(--divider); }
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.card-title .lead {
+  display: flex; align-items: center; gap: 8px;
+}
+.card-sub {
+  font-size: 11px;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* ===== Tags ===== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  margin: 0 4px 4px 0;
+}
+.tag.gray { background: #F0F1EE; color: var(--text-sub); }
+.tag.pink { background: var(--pink); color: var(--pink-text); }
+.tag.beige { background: var(--beige); color: var(--beige-text); }
+.tag.blue { background: var(--blue); color: var(--blue-text); }
+.tag.outline { background: transparent; border: 1px solid var(--divider); color: var(--text-sub); }
+
+/* ===== Agent Badge (AI 标记) ===== */
+.agent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: var(--agent-purple);
+  color: var(--agent-purple-text);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.agent-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #8B7BC4;
+}
+.agent-badge.teal {
+  background: var(--agent-teal);
+  color: var(--agent-teal-text);
+}
+.agent-badge.teal::before { background: #2D7A6E; }
+.agent-badge.live::before { animation: pulse 1.6s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* ===== Buttons ===== */
+.btn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  border-radius: var(--r-btn);
+  font-size: 13px;
+  transition: opacity .2s ease;
+}
+.btn:hover { opacity: 0.9; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary.lg { padding: 14px 18px; font-size: 14px; border-radius: 16px; }
+.btn-secondary { background: var(--primary-soft); color: var(--primary-dark); }
+.btn-ghost { background: transparent; color: var(--text-sub); border: 1px solid var(--divider); }
+.btn-block { width: 100%; }
+
+/* ===== Avatar ===== */
+.avatar {
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+.avatar.xl { width: 92px; height: 92px; font-size: 32px; }
+.avatar.lg { width: 64px; height: 64px; font-size: 24px; }
+.avatar.md { width: 48px; height: 48px; font-size: 18px; }
+.avatar.sm { width: 36px; height: 36px; font-size: 14px; }
+.avatar.xs { width: 28px; height: 28px; font-size: 12px; }
+
+.gradient-1 { background: linear-gradient(135deg, #C7E7CD, #6FAF7B); }
+.gradient-2 { background: linear-gradient(135deg, #F4D6E6, #C28BAA); }
+.gradient-3 { background: linear-gradient(135deg, #DCEBFA, #7BA8D6); }
+.gradient-4 { background: linear-gradient(135deg, #F6EFD9, #C9A85D); }
+.gradient-5 { background: linear-gradient(135deg, #E8E2F5, #8B7BC4); }
+.gradient-6 { background: linear-gradient(135deg, #FCE2D6, #D58A6E); }
+
+/* ===== Progress / Bars ===== */
+.progress-bar {
+  background: #F0F1EE;
+  border-radius: 999px;
+  height: 6px;
+  overflow: hidden;
+}
+.progress-bar > div {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+}
+.progress-bar.thin { height: 4px; }
+
+/* Portrait bar (AI dimension display) */
+.portrait-bar { margin-bottom: 13px; }
+.portrait-bar:last-child { margin-bottom: 0; }
+.portrait-bar .row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.portrait-bar .label { color: var(--text); font-weight: 500; }
+.portrait-bar .val {
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+.portrait-bar .track {
+  height: 5px;
+  background: #F0F1EE;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.portrait-bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, #B6DCBE, #6FAF7B);
+  border-radius: 999px;
+}
+
+/* ===== Metric Card Grid ===== */
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.metric-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+.metric-card {
+  background: var(--surface-soft);
+  border-radius: 14px;
+  padding: 11px 12px;
+}
+.metric-card .num {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.metric-card .num.sm { font-size: 15px; }
+.metric-card .label {
+  font-size: 10px;
+  color: var(--text-sub);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.metric-card.tinted { background: var(--primary-soft); }
+.metric-card.tinted .num { color: var(--primary-dark); }
+.metric-card.agent-tinted { background: var(--agent-purple); }
+.metric-card.agent-tinted .num { color: var(--agent-purple-text); }
+
+/* ===== Setting List ===== */
+.setting-group {
+  background: var(--card);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  padding: 11px 14px;
+  font-size: 13px;
+}
+.setting-row + .setting-row {
+  border-top: 1px solid var(--divider);
+}
+.setting-row .icon-box {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  margin-right: 11px;
+  flex-shrink: 0;
+}
+.setting-row .label { flex: 1; font-weight: 500; }
+.setting-row .arrow {
+  color: var(--text-faint);
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+/* ===== Pill Switch ===== */
+.pill-switch {
+  display: inline-flex;
+  background: #F0F1EE;
+  border-radius: 11px;
+  padding: 3px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.pill-switch span {
+  padding: 5px 12px;
+  border-radius: 9px;
+  color: var(--text-sub);
+  cursor: pointer;
+}
+.pill-switch span.on {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== Hint ===== */
+.hint {
+  font-size: 11px;
+  color: var(--text-sub);
+  text-align: center;
+  padding: 14px 8px 6px;
+  line-height: 1.5;
+}
+
+/* ===== Activity card ===== */
+.agent-activity-card {
+  background: var(--card);
+  border-radius: var(--r-card);
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+}
+.agent-activity-card.live {
+  background: linear-gradient(180deg, #F1F8F3 0%, #fff 70%);
+  border: 1px solid #DDEEE1;
+  box-shadow: 0 8px 20px rgba(111, 175, 123, 0.12);
+}
+
+/* ===== Handoff ===== */
+.handoff-success {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 22px 0 14px;
+}
+.handoff-success .ring {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+}
+.handoff-success .ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid #DCEBE0;
+  opacity: 0.5;
+}
+
+/* ===== Score ring ===== */
+.score-big {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--primary-dark);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.score-big sup {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-left: 2px;
+  vertical-align: super;
+}
+
+/* ===== Chat list item ===== */
+.chat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 6px;
+}
+.chat-row + .chat-row { border-top: 1px solid var(--divider); }
+.chat-row .body { flex: 1; min-width: 0; }
+.chat-row .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+.chat-row .name {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chat-row .time {
+  font-size: 11px;
+  color: var(--text-sub);
+  flex-shrink: 0;
+}
+.chat-row .preview {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.45;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.unread-dot {
+  background: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 999px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Bullet list w/ dot ===== */
+.bullet-list { display: flex; flex-direction: column; gap: 9px; }
+.bullet-list li {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.bullet-list li::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
+/* ===== Memory item ===== */
+.memory-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--divider);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.memory-item:last-child { border-bottom: none; }
+.memory-item .body { flex: 1; }
+.memory-item .actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.memory-item .actions span {
+  font-size: 11px;
+  color: var(--text-sub);
+  cursor: pointer;
+}
+
+/* ===== Slider ===== */
+.style-slider { margin-bottom: 12px; }
+.style-slider:last-child { margin-bottom: 0; }
+.style-slider .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+}
+.style-slider .row b { color: var(--text); font-weight: 500; }
+.style-slider .track {
+  position: relative;
+  height: 4px;
+  background: #F0F1EE;
+  border-radius: 999px;
+}
+.style-slider .track::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: var(--w, 50%);
+  background: var(--primary);
+  border-radius: 999px;
+}
+.style-slider .track .knob {
+  position: absolute;
+  left: var(--w, 50%);
+  top: 50%;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translate(-50%, -50%);
+  border: 1.5px solid var(--primary);
+}
+
+/* ===== Toggle ===== */
+.toggle {
+  width: 42px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--primary);
+  position: relative;
+  flex-shrink: 0;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 18px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: left .2s ease;
+}
+.toggle.off { background: #DEDFDB; }
+.toggle.off::after { left: 2px; }
+
+/* ===== Misc ===== */
+.row-flex { display: flex; align-items: center; gap: 10px; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.divider-line { height: 1px; background: var(--divider); margin: 8px 0; }
+.muted { color: var(--text-sub); }
+.f-11 { font-size: 11px; }
+.f-12 { font-size: 12px; }
+.f-13 { font-size: 13px; }
+.f-14 { font-size: 14px; }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mb-4 { margin-bottom: 4px; }
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+
+/* ===== Status icon dot for activity ===== */
+.status-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.status-pill.live { background: var(--primary-soft); color: var(--primary-dark); }
+.status-pill.pushed { background: var(--agent-purple); color: var(--agent-purple-text); }
+.status-pill.skipped { background: #F0F1EE; color: var(--text-sub); }
+.status-pill.ended { background: var(--beige); color: var(--beige-text); }
+
+/* Compact spacing inside cards */
+p { line-height: 1.55; }
+
+</style>
+</head>
+<body>
+
+<div class="canvas-header">
+  <span class="eyebrow">NEOLINK · MOBILE PROTOTYPE</span>
+  <h1>Your AI, Your Social Proxy</h1>
+  <p>7 screens · iOS · Designed 2026.05.12</p>
+</div>
+
+<div class="canvas">
+
+  <!-- ============================================================
+       1 / Home
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">1</span>Home</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <span class="brand">Neolink<span class="dot"></span></span>
+          <div class="icon-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          </div>
+        </div>
+
+        <div class="greeting">
+          <h2>晚上好，Yihua</h2>
+          <p>你的 Agent 今天替你聊了 <b style="color:var(--text);">7</b> 个人</p>
+        </div>
+
+        <!-- Today Agent Status -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead">今日 Agent 状态</span>
+            <span class="agent-badge live">在线</span>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-card"><div class="num">14h 22m</div><div class="label">在线时长</div></div>
+            <div class="metric-card"><div class="num">7</div><div class="label">发起对话</div></div>
+            <div class="metric-card tinted"><div class="num">2</div><div class="label">待你接管</div></div>
+            <div class="metric-card"><div class="num">71%</div><div class="label">平均契合度</div></div>
+          </div>
+        </div>
+
+        <!-- Pending Handoff (CORE) -->
+        <div class="card" style="background: linear-gradient(180deg, #F1F8F3 0%, #fff 70%); border:1px solid #DDEEE1;">
+          <div class="card-title">
+            <span class="lead">待你接管 <span class="card-sub">2 个候选</span></span>
+            <span style="font-size:11px; color:var(--primary-dark); font-weight:600;">查看全部 →</span>
+          </div>
+
+          <div class="row-flex" style="padding:6px 0 12px;">
+            <div class="avatar md gradient-2">S</div>
+            <div style="flex:1; min-width:0;">
+              <div class="row-between">
+                <span class="f-14 fw-600">Serena</span>
+                <span class="fw-700" style="color:var(--primary-dark); font-size:14px;">89%</span>
+              </div>
+              <p class="f-12 muted mt-4" style="line-height:1.5;">你们都在做 AI 创业，且都偏好深夜聊天</p>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:6px;">
+            <button class="btn btn-primary" style="flex:1.4; padding:10px; font-size:12.5px;">接管</button>
+            <button class="btn btn-secondary" style="flex:1.4; padding:10px; font-size:12px;">让 Agent 继续</button>
+            <button class="btn btn-ghost" style="flex:0.9; padding:10px; font-size:12px;">跳过</button>
+          </div>
+        </div>
+
+        <!-- Agent Learned -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead"><span class="agent-badge">Agent</span>今天学到了什么</span>
+          </div>
+          <p class="f-13" style="line-height:1.6; color:var(--text);">注意到你不喜欢"过度热情型"对话，已自动调整匹配权重。</p>
+          <div style="display:flex; gap:6px; margin-top:12px;">
+            <button class="btn btn-secondary" style="padding:7px 14px; font-size:12px;">准确</button>
+            <button class="btn btn-ghost" style="padding:7px 14px; font-size:12px;">需要修正</button>
+          </div>
+        </div>
+
+        <!-- Announcement -->
+        <div class="card flat" style="display:flex; align-items:center; gap:10px;">
+          <div style="width:32px; height:32px; border-radius:9px; background:var(--blue); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4078B0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-7-7 18-2-9-9-2z"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="f-13 fw-600">本周自主匹配上限 62%</div>
+            <div class="f-11 muted mt-4">还可发起约 18 次 Agent 对话</div>
+          </div>
+        </div>
+      </div>
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <div class="tab active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg>
+          <span>首页</span>
+        </div>
+        <div class="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg>
+          <span>Agent</span>
+        </div>
+        <div class="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+          <span>消息</span>
+        </div>
+        <div class="tab">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>我的</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       2 / Agent Activity
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">2</span>Agent Activity</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <span class="page-title">Agent 活动</span>
+          <div class="pill-switch">
+            <span class="on">今日</span>
+            <span>本周</span>
+            <span>全部</span>
+          </div>
+        </div>
+
+        <!-- Stats summary bar -->
+        <div class="metric-grid cols-4 mb-12" style="margin-top:8px;">
+          <div class="metric-card"><div class="num sm">7</div><div class="label">今日</div></div>
+          <div class="metric-card tinted"><div class="num sm">2</div><div class="label">高契合</div></div>
+          <div class="metric-card"><div class="num sm">4</div><div class="label">已结束</div></div>
+          <div class="metric-card agent-tinted"><div class="num sm">1</div><div class="label">进行中</div></div>
+        </div>
+
+        <!-- Live conversation -->
+        <div class="agent-activity-card live">
+          <div class="row-between mb-8">
+            <div class="row-flex">
+              <div class="avatar sm gradient-3">M</div>
+              <div>
+                <div class="f-13 fw-600">Mira 的 Agent</div>
+                <div class="f-11 muted">第 12 / 20 轮 · 持续 22 分钟</div>
+              </div>
+            </div>
+            <span class="status-pill live">● 进行中</span>
+          </div>
+          <p class="f-12 muted" style="line-height:1.5;">正在聊各自喜欢的纪录片导演——你的 Agent 提到了 Wim Wenders。</p>
+          <div class="row-between mt-12">
+            <div class="row-flex" style="gap:6px;">
+              <span class="f-11 muted">实时契合度</span>
+              <span class="fw-700" style="color:var(--primary-dark); font-size:14px;">83%</span>
+            </div>
+            <span class="f-11" style="color:var(--primary-dark); font-weight:600;">围观 →</span>
+          </div>
+        </div>
+
+        <!-- Ended #1 (high match) -->
+        <div class="agent-activity-card">
+          <div class="row-between mb-8">
+            <div class="row-flex">
+              <div class="avatar sm gradient-2">E</div>
+              <div>
+                <div class="f-13 fw-600">Ethan</div>
+                <div class="f-11 muted">上海 · 复旦</div>
+              </div>
+            </div>
+            <span class="fw-700" style="color:var(--primary-dark); font-size:14px;">89%</span>
+          </div>
+          <div class="mb-8">
+            <span class="tag">AI 创业</span>
+            <span class="tag pink">长期主义</span>
+            <span class="tag beige">深夜聊天</span>
+          </div>
+          <p class="f-12 muted mb-8" style="line-height:1.5;">"聊得很投，价值观高度一致，建议接管。"</p>
+          <div class="row-between">
+            <span class="status-pill pushed">已推送给你</span>
+            <span class="f-11 muted">14:22</span>
+          </div>
+        </div>
+
+        <!-- Ended #2 -->
+        <div class="agent-activity-card">
+          <div class="row-between mb-8">
+            <div class="row-flex">
+              <div class="avatar sm gradient-4">Y</div>
+              <div>
+                <div class="f-13 fw-600">Yuki</div>
+                <div class="f-11 muted">东京 · 留学</div>
+              </div>
+            </div>
+            <span class="fw-700" style="color:var(--text-sub); font-size:14px;">64%</span>
+          </div>
+          <div class="mb-8">
+            <span class="tag gray">独立电影</span>
+            <span class="tag gray">慢节奏</span>
+          </div>
+          <p class="f-12 muted mb-8" style="line-height:1.5;">"兴趣有重合，但节奏期待不同，已礼貌结束。"</p>
+          <div class="row-between">
+            <span class="status-pill ended">已结束</span>
+            <span class="f-11 muted">11:08</span>
+          </div>
+        </div>
+
+        <!-- Ended #3 (skipped) -->
+        <div class="agent-activity-card">
+          <div class="row-between mb-8">
+            <div class="row-flex">
+              <div class="avatar sm gradient-6">L</div>
+              <div>
+                <div class="f-13 fw-600">Luna</div>
+                <div class="f-11 muted">北京 · 清华</div>
+              </div>
+            </div>
+            <span class="fw-700" style="color:var(--text-sub); font-size:14px;">41%</span>
+          </div>
+          <p class="f-12 muted mb-8" style="line-height:1.5;">"对方表达过于快节奏，与你偏好不符，未触发推送。"</p>
+          <div class="row-between">
+            <span class="status-pill skipped">已自动跳过</span>
+            <span class="f-11 muted">09:50</span>
+          </div>
+        </div>
+
+        <div class="hint">Neolink 让 Agent 替你探路，把真正值得的人留给你自己。</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       3 / AI Agent Portrait
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">3</span>AI Agent Portrait</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <span class="page-title">我的 Agent</span>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1A1.6 1.6 0 0 0 15 4.6a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
+          </div>
+        </div>
+
+        <!-- Agent Name Card -->
+        <div class="card lg" style="background: linear-gradient(180deg, #F4F0FB 0%, #fff 70%); border:1px solid #ECE6F5;">
+          <div class="row-flex mb-12">
+            <div class="avatar lg gradient-5">小钰</div>
+            <div style="flex:1; min-width:0;">
+              <div class="row-between">
+                <span class="f-14 fw-700">小钰</span>
+                <span class="agent-badge">Agent</span>
+              </div>
+              <div class="f-11 muted mt-4">为 Yihua 工作 · 已 47 天</div>
+              <div class="mt-8">
+                <span class="tag">理性</span>
+                <span class="tag">慢热</span>
+                <span class="tag">长期主义</span>
+              </div>
+            </div>
+          </div>
+          <p class="f-12" style="line-height:1.65; color:var(--text);">"理性、克制、慢热，重视长期价值观一致。倾向先听后说，不主动追求快速热络。"</p>
+        </div>
+
+        <!-- Style Portrait -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead">Agent 社交风格</span>
+            <span class="card-sub">基于 47 次对话</span>
+          </div>
+          <div class="portrait-bar">
+            <div class="row"><span class="label">主动程度</span><span class="val">56</span></div>
+            <div class="track"><div class="fill" style="width:56%;"></div></div>
+          </div>
+          <div class="portrait-bar">
+            <div class="row"><span class="label">表达克制度</span><span class="val">83</span></div>
+            <div class="track"><div class="fill" style="width:83%;"></div></div>
+          </div>
+          <div class="portrait-bar">
+            <div class="row"><span class="label">共情倾向</span><span class="val">78</span></div>
+            <div class="track"><div class="fill" style="width:78%;"></div></div>
+          </div>
+          <div class="portrait-bar">
+            <div class="row"><span class="label">敢聊深话题</span><span class="val">64</span></div>
+            <div class="track"><div class="fill" style="width:64%;"></div></div>
+          </div>
+          <div class="portrait-bar">
+            <div class="row"><span class="label">探索新人意愿</span><span class="val">71</span></div>
+            <div class="track"><div class="fill" style="width:71%;"></div></div>
+          </div>
+        </div>
+
+        <!-- Long-term Memory -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead">Agent 长期记忆</span>
+            <span class="card-sub">12 条</span>
+          </div>
+          <div class="memory-item">
+            <div class="body">不喜欢被开门见山问星座</div>
+            <div class="actions"><span>修改</span><span>删除</span></div>
+          </div>
+          <div class="memory-item">
+            <div class="body">偏好对方有明确长期目标</div>
+            <div class="actions"><span>修改</span><span>删除</span></div>
+          </div>
+          <div class="memory-item">
+            <div class="body">在做 AI Agent 相关创业</div>
+            <div class="actions"><span>修改</span><span>删除</span></div>
+          </div>
+          <div class="memory-item">
+            <div class="body">周末更愿意安排长对话</div>
+            <div class="actions"><span>修改</span><span>删除</span></div>
+          </div>
+        </div>
+
+        <!-- Adjust Style -->
+        <div class="card">
+          <div class="card-title"><span class="lead">调整 Agent 风格</span></div>
+          <div class="style-slider" style="--w: 30%;">
+            <div class="row"><b>更主动</b><span>更克制</span></div>
+            <div class="track"><div class="knob"></div></div>
+          </div>
+          <div class="style-slider" style="--w: 65%;">
+            <div class="row"><b>探索新人</b><span>稳定深聊</span></div>
+            <div class="track"><div class="knob"></div></div>
+          </div>
+          <div class="style-slider" style="--w: 78%;">
+            <div class="row"><b>表达直接</b><span>含蓄克制</span></div>
+            <div class="track"><div class="knob"></div></div>
+          </div>
+        </div>
+
+        <!-- Work Mode -->
+        <div class="card">
+          <div class="card-title"><span class="lead">Agent 工作模式</span></div>
+          <div class="row-between" style="padding:6px 0;">
+            <div>
+              <div class="f-13 fw-600">自动社交中</div>
+              <div class="f-11 muted mt-4">每天最多发起 10 次对话</div>
+            </div>
+            <div class="toggle"></div>
+          </div>
+          <div class="divider-line"></div>
+          <div class="row-between" style="padding:6px 0;">
+            <div>
+              <div class="f-13 fw-600">仅手动触发</div>
+              <div class="f-11 muted mt-4">由你来挑选 Agent 对话对象</div>
+            </div>
+            <div class="toggle off"></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       4 / Handoff
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">4</span>Handoff（接管推送）</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </div>
+          <span class="f-14 fw-600">Agent Handoff</span>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          </div>
+        </div>
+
+        <!-- Success Header -->
+        <div class="handoff-success">
+          <div class="ring">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4D8F5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div style="font-size:18px; font-weight:700; letter-spacing:-0.02em; text-align:center;">你的 Agent 找到了一个高契合度对象</div>
+          <div class="f-12 muted mt-4" style="text-align:center;">Agent 间共 18 轮对话 · 评估完成</div>
+        </div>
+
+        <!-- Match info -->
+        <div class="card lg" style="background: linear-gradient(180deg, #F1F8F3 0%, #fff 70%); border:1px solid #DDEEE1;">
+          <div class="row-flex">
+            <div class="avatar lg gradient-2">S</div>
+            <div style="flex:1;">
+              <div class="f-14 fw-700">Serena · 24</div>
+              <div class="f-12 muted mt-4">北京 · 北京大学</div>
+              <div class="mt-8">
+                <span class="tag">AI 创业</span>
+                <span class="tag pink">长跑</span>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div class="score-big">89<sup>%</sup></div>
+              <div class="f-11 muted mt-4">契合度</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-grid stats -->
+        <div class="metric-grid cols-4 mb-12">
+          <div class="metric-card tinted"><div class="num sm">高</div><div class="label">价值观</div></div>
+          <div class="metric-card tinted"><div class="num sm">适配</div><div class="label">沟通节奏</div></div>
+          <div class="metric-card"><div class="num sm">5 项</div><div class="label">兴趣重合</div></div>
+          <div class="metric-card agent-tinted"><div class="num sm">18</div><div class="label">Agent 轮次</div></div>
+        </div>
+
+        <!-- Conversation excerpt -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead"><span class="agent-badge">Agent ⇆ Agent</span></span>
+          </div>
+          <div class="f-12 fw-600 mb-8" style="color:var(--text);">你的 Agent 和 Serena 的 Agent 都聊了什么</div>
+          <ul class="bullet-list">
+            <li>双方都提到"喜欢一个人长跑时听播客"，互相推荐了 3 期节目。</li>
+            <li>都讨论了对长期关系节奏的偏好，倾向慢热而不是快速推进。</li>
+            <li>Serena 的 Agent 主动分享了她最近在写的一个 AI 写作工具。</li>
+          </ul>
+        </div>
+
+        <!-- Agent suggestions -->
+        <div class="card">
+          <div class="card-title"><span class="lead">Agent 给你的建议</span></div>
+          <ul class="bullet-list">
+            <li>对方表达克制，建议你也别一上来太热情。</li>
+            <li>推荐以"她提到的 AI 写作工具"作为开场。</li>
+            <li>不建议聊星座 / 测试类话题。</li>
+          </ul>
+        </div>
+
+        <!-- Buttons -->
+        <button class="btn btn-primary lg btn-block mb-8" style="margin-top:4px;">接管，开始真人聊天</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-secondary" style="flex:1;">让 Agent 再聊一会儿</button>
+          <button class="btn btn-ghost" style="flex:0.7;">跳过</button>
+        </div>
+
+        <div class="hint">接管后，你的 Agent 会退到侧边作为话题助手。</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       5 / Messages
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">5</span>Messages</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <span class="page-title">消息</span>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div style="background:#F0F1EE; border-radius:11px; padding:8px 12px; display:flex; align-items:center; gap:8px; margin-bottom:14px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8F98" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="f-12 muted">搜索对话</span>
+        </div>
+
+        <!-- Agent push card -->
+        <div class="card" style="background: linear-gradient(180deg, #F4F0FB 0%, #FFFCFA 80%); border:1px solid #ECE6F5;">
+          <div class="row-between mb-8">
+            <span class="agent-badge">Agent 推送</span>
+            <span class="f-11 muted">刚刚</span>
+          </div>
+          <div class="f-13 fw-600 mb-4" style="line-height:1.5;">你的 Agent 找到了 1 个高契合度对象</div>
+          <p class="f-12 muted mb-12" style="line-height:1.5;">Serena · 89% 契合度 · 等你接管</p>
+          <button class="btn btn-secondary btn-block" style="font-size:12.5px;">查看对话精华 →</button>
+        </div>
+
+        <!-- Real chat list -->
+        <div class="card">
+          <div class="chat-row">
+            <div class="avatar md gradient-2">S</div>
+            <div class="body">
+              <div class="top">
+                <span class="name">Serena</span>
+                <span class="time">19:42</span>
+              </div>
+              <div class="row-between">
+                <span class="preview">好啊，那我们就先聊聊那本书 :)</span>
+                <span class="unread-dot">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-row">
+            <div class="avatar md gradient-1">E</div>
+            <div class="body">
+              <div class="top">
+                <span class="name">Ethan</span>
+                <span class="time">昨天</span>
+              </div>
+              <div class="preview">谢谢你今天的分享，下次再约。</div>
+            </div>
+          </div>
+
+          <!-- Agent in-progress (still proxying) -->
+          <div class="chat-row">
+            <div class="avatar md gradient-3">M</div>
+            <div class="body">
+              <div class="top">
+                <span class="name">Mira <span class="agent-badge teal" style="font-size:9px; padding:2px 6px;">Agent 进行中</span></span>
+                <span class="time">14:08</span>
+              </div>
+              <div class="preview">Agent 正在聊纪录片导演 Wim Wenders…</div>
+            </div>
+          </div>
+
+          <div class="chat-row">
+            <div class="avatar md gradient-4">Y</div>
+            <div class="body">
+              <div class="top">
+                <span class="name">Yuki</span>
+                <span class="time">周二</span>
+              </div>
+              <div class="preview">那天提到的咖啡店我去了，挺好的。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tip -->
+        <div class="card flat" style="background:var(--surface-soft); border-color:transparent;">
+          <p class="f-12" style="line-height:1.55; color:var(--text-sub);">
+            <b style="color:var(--text);">Neolink 建议：</b>接管对话后，前 3 句尽量自然，不需要重复 Agent 已经聊过的话。
+          </p>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       6 / Daily Brief
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">6</span>Daily Brief（每日摘要）</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">21:00</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <div>
+            <div class="page-title">今日摘要</div>
+            <div class="f-12 muted mt-4">5 月 12 日 · 你的 Agent 替你度过了今天</div>
+          </div>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1 0 2 1 2 2v12c0 1-1 2-2 2H4c-1 0-2-1-2-2V6c0-1 1-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+          </div>
+        </div>
+
+        <!-- Stats overview -->
+        <div class="card lg" style="background: linear-gradient(180deg, #F1F8F3 0%, #fff 70%); border:1px solid #DDEEE1;">
+          <div class="card-title">
+            <span class="lead">今日数据</span>
+            <span class="agent-badge">Agent 报告</span>
+          </div>
+          <div class="metric-grid cols-4">
+            <div class="metric-card"><div class="num sm">7</div><div class="label">对话</div></div>
+            <div class="metric-card"><div class="num sm">71%</div><div class="label">平均契合</div></div>
+            <div class="metric-card tinted"><div class="num sm">2</div><div class="label">高契合</div></div>
+            <div class="metric-card"><div class="num sm">4</div><div class="label">主动结束</div></div>
+          </div>
+        </div>
+
+        <!-- Highlight -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead">✨ 今天的高光时刻</span>
+          </div>
+          <p class="f-13" style="line-height:1.7; color:var(--text);">
+            今天你的 Agent 和一个学物理的女生 Agent 聊了 <b>26 分钟</b>，从黑洞聊到了一个人住的孤独感。她的 Agent 提到她也很喜欢半夜散步。
+          </p>
+          <div class="row-between mt-12" style="padding-top:10px; border-top:1px solid var(--divider);">
+            <div class="row-flex">
+              <div class="avatar xs gradient-3">N</div>
+              <span class="f-12 muted">Nora · 89% 契合度</span>
+            </div>
+            <span class="f-12 fw-600" style="color:var(--primary-dark);">看完整对话 →</span>
+          </div>
+        </div>
+
+        <!-- Suggested handoff -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead">建议你接管</span>
+            <span class="card-sub">2 人</span>
+          </div>
+          <div class="row-flex" style="padding:6px 0;">
+            <div class="avatar sm gradient-2">S</div>
+            <div style="flex:1;">
+              <div class="row-between">
+                <span class="f-13 fw-600">Serena</span>
+                <span class="fw-700" style="color:var(--primary-dark); font-size:13px;">89%</span>
+              </div>
+              <p class="f-11 muted mt-4">价值观高度一致，沟通节奏适配</p>
+            </div>
+          </div>
+          <div class="divider-line"></div>
+          <div class="row-flex" style="padding:6px 0;">
+            <div class="avatar sm gradient-3">N</div>
+            <div style="flex:1;">
+              <div class="row-between">
+                <span class="f-13 fw-600">Nora</span>
+                <span class="fw-700" style="color:var(--primary-dark); font-size:13px;">89%</span>
+              </div>
+              <p class="f-11 muted mt-4">表达克制，长期主义倾向相近</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent learnings -->
+        <div class="card">
+          <div class="card-title">
+            <span class="lead"><span class="agent-badge">Agent</span>今天对你的新发现</span>
+          </div>
+          <div class="memory-item" style="border-bottom:none; padding:8px 0;">
+            <div class="body">
+              <div class="f-12.5" style="font-size:12.5px;">你似乎不太喜欢上来就被问职业</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-secondary" style="padding:4px 10px; font-size:11px;">确认</button>
+              <button class="btn btn-ghost" style="padding:4px 10px; font-size:11px;">修正</button>
+            </div>
+          </div>
+          <div class="divider-line"></div>
+          <div class="memory-item" style="border-bottom:none; padding:8px 0;">
+            <div class="body">
+              <div style="font-size:12.5px;">你今天对一个聊"原生家庭"的 Agent 聊得很久</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-secondary" style="padding:4px 10px; font-size:11px;">确认</button>
+              <button class="btn btn-ghost" style="padding:4px 10px; font-size:11px;">修正</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">Agent 的成长，来自你的每一次反馈。</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       7 / Profile & Agent Settings
+       ============================================================ -->
+  <div class="artboard">
+    <div class="artboard-label"><span class="num">7</span>Profile & Agent Settings</div>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="5" y="5" width="3" height="6" rx="0.5"/><rect x="10" y="2.5" width="3" height="8.5" rx="0.5"/><rect x="15" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0z"/><circle cx="8" cy="9" r="1.5"/></svg>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="22" height="11" rx="2.8" stroke="currentColor" opacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="app-header">
+          <span class="page-title">我的</span>
+          <div class="icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1A1.6 1.6 0 0 0 15 4.6a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>
+          </div>
+        </div>
+
+        <!-- Profile header -->
+        <div style="display:flex; flex-direction:column; align-items:center; padding:12px 0 18px;">
+          <div class="avatar xl gradient-1" style="margin-bottom:14px;">Y</div>
+          <div style="font-size:20px; font-weight:700; letter-spacing:-0.02em;">Yihua</div>
+          <div class="f-12 muted mt-4">北京 · 25 · AI 创业</div>
+          <p class="f-12" style="text-align:center; color:var(--text); margin-top:12px; line-height:1.6; max-width:280px;">
+            "希望先理解，再相遇。Agent 替我探路，但真正的对话还是想自己来。"
+          </p>
+          <div style="margin-top:14px;">
+            <span class="tag">AI Agent</span>
+            <span class="tag pink">创业</span>
+            <span class="tag beige">长跑</span>
+            <span class="tag blue">纪录片</span>
+            <span class="tag">深夜聊天</span>
+            <span class="tag pink">长期主义</span>
+          </div>
+        </div>
+
+        <!-- Profile completion -->
+        <div class="card">
+          <div class="row-between mb-8">
+            <span class="f-13 fw-600">资料完整度</span>
+            <span class="f-13 fw-700" style="color:var(--primary-dark);">82%</span>
+          </div>
+          <div class="progress-bar"><div style="width:82%;"></div></div>
+          <div class="f-11 muted mt-8">补充 3 项偏好可让 Agent 匹配更精准</div>
+        </div>
+
+        <!-- My Agent entry -->
+        <div class="card" style="background: linear-gradient(180deg, #F4F0FB 0%, #fff 70%); border:1px solid #ECE6F5;">
+          <div class="row-flex">
+            <div class="avatar md gradient-5">小</div>
+            <div style="flex:1;">
+              <div class="row-between">
+                <span class="f-13 fw-600">小钰</span>
+                <span class="agent-badge live">自动社交中</span>
+              </div>
+              <div class="f-11 muted mt-4">今日已发起 7 次对话</div>
+            </div>
+            <button class="btn btn-ghost" style="padding:6px 10px; font-size:11px;">暂停</button>
+          </div>
+        </div>
+
+        <!-- Preference summary -->
+        <div class="card">
+          <div class="card-title"><span class="lead">希望对方</span></div>
+          <div>
+            <span class="tag">真诚</span>
+            <span class="tag">慢热</span>
+            <span class="tag">有清晰长期目标</span>
+            <span class="tag outline">不喜欢测试类话题</span>
+          </div>
+        </div>
+
+        <!-- Setting list group 1 -->
+        <div class="setting-group">
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--primary-soft);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4D8F5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <span class="label">个人资料</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--agent-purple);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6E5BA8" stroke-width="2.2" stroke-linecap="round"><circle cx="6" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 12h8" stroke-dasharray="2 2"/></svg>
+            </div>
+            <span class="label">Agent 设置</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--pink);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B05A86" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+            </div>
+            <span class="label">匹配偏好</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--beige);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7B30" stroke-width="2.2" stroke-linecap="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <span class="label">对话权限</span>
+            <span class="arrow">›</span>
+          </div>
+        </div>
+
+        <!-- Setting list group 2 -->
+        <div class="setting-group">
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--blue);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4078B0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+            </div>
+            <span class="label">通知设置</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--primary-soft);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4D8F5C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <span class="label">隐私设置</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:#F0F1EE;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8F98" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M5 5l14 14"/></svg>
+            </div>
+            <span class="label">黑名单 / 屏蔽词</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--agent-purple);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6E5BA8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <span class="label">Agent 记忆管理</span>
+            <span class="arrow">›</span>
+          </div>
+        </div>
+
+        <!-- Setting list group 3 -->
+        <div class="setting-group">
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--beige);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9C7B30" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <span class="label">数据导出</span>
+            <span class="arrow">›</span>
+          </div>
+          <div class="setting-row">
+            <div class="icon-box" style="background:var(--pink);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B05A86" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4M12 17h.01"/></svg>
+            </div>
+            <span class="label">帮助与反馈</span>
+            <span class="arrow">›</span>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary btn-block" style="margin-top:6px;">编辑资料</button>
+
+        <div class="hint">Neolink v0.1 · build 47</div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V10.5z"/></svg><span>首页</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.6 12h6.8" stroke-dasharray="2 2"/></svg><span>Agent</span></div>
+        <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg><span>消息</span></div>
+        <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 让 Agent 状态徽标有轻微节奏感（仅装饰，不影响导出）
+  document.querySelectorAll('.agent-badge.live').forEach(el => el.classList.add('live'));
+</script>
+
+</body>
+</html>
