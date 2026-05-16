@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neolink — Healing All Screens</title>
+<style>
+:root {
+  --canvas: #F4F1EA;
+  --screen: #FFFDF8;
+  --card: #FFFFFF;
+  --card-soft: #FAF6EE;
+  --line: #EEE7DB;
+  --line-strong: #E1D6C7;
+  --text: #2F2A25;
+  --muted: #8D8174;
+  --faint: #B9AC9B;
+  --green: #7EA58B;
+  --green-dark: #567C62;
+  --green-soft: #EAF2EA;
+  --peach: #F4CBB8;
+  --peach-soft: #FAEDE4;
+  --peach-text: #9A634F;
+  --blue: #DDE9EE;
+  --blue-text: #527381;
+  --lavender: #E9E2F0;
+  --lavender-text: #75628A;
+  --gold: #F0E0B7;
+  --gold-text: #846B2D;
+  --danger: #D88976;
+  --shadow: 0 10px 28px rgba(75, 58, 42, 0.07);
+  --shadow-soft: 0 5px 16px rgba(75, 58, 42, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--canvas);
+}
+
+body {
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  padding: 58px 34px 78px;
+  letter-spacing: 0;
+}
+
+button {
+  border: 0;
+  color: inherit;
+  font: inherit;
+}
+
+.canvas-header {
+  max-width: 820px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(126, 165, 139, 0.28);
+  border-radius: 999px;
+  background: rgba(234, 242, 234, 0.82);
+  color: var(--green-dark);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.canvas-header h1 {
+  margin-top: 16px;
+  font-size: 38px;
+  line-height: 1.12;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.canvas-header p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.reference-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 7px 10px;
+  border: 1px solid rgba(238, 231, 219, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 253, 248, 0.66);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reference-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+}
+
+.reference-thumb.one { background-image: url("copy-prototype/1.jpg"); }
+.reference-thumb.two { background-image: url("copy-prototype/2.jpg"); }
+.reference-thumb.three { background-image: url("copy-prototype/3.jpg"); }
+
+.canvas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 58px 38px;
+  max-width: 1740px;
+  margin: 0 auto;
+}
+
+.artboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.artboard-label {
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 640;
+}
+
+.artboard-label span {
+  margin-right: 7px;
+  color: var(--green-dark);
+  font-weight: 800;
+}
+
+.phone {
+  position: relative;
+  width: 375px;
+  height: 812px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 44px;
+  background: var(--screen);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(75, 58, 42, 0.05);
+}
+
+.phone::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  z-index: 4;
+  width: 72px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(47, 42, 37, 0.05);
+}
+
+.status-bar {
+  position: relative;
+  z-index: 5;
+  height: 44px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 27px 0;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 680;
+  font-variant-numeric: tabular-nums;
+}
+
+.status-bar .right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.screen {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 20px 14px;
+  scrollbar-width: none;
+}
+
+.screen::-webkit-scrollbar {
+  display: none;
+}
+
+.screen.no-scroll {
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 2px 12px;
+}
+
+.brand,
+.page-title {
+  font-size: 23px;
+  line-height: 1.08;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.brand .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.page-title.sm {
+  font-size: 21px;
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.icon-btn.soft {
+  background: var(--green-soft);
+  color: var(--green-dark);
+  box-shadow: none;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.micro {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 640;
+}
+
+.caption {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 10px;
+  font-size: 14px;
+  font-weight: 760;
+}
+
+.section-title:first-child {
+  margin-top: 4px;
+}
+
+.card {
+  border: 1px solid rgba(238, 231, 219, 0.92);
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+}
+
+.card + .card {
+  margin-top: 11px;
+}
+
+.card.flat {
+  box-shadow: none;
+}
+
+.soft-panel {
+  border: 1px solid rgba(238, 231, 219, 0.9);
+  border-radius: 22px;
+  background: var(--card-soft);
+  padding: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 780;
+}
+
+.badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.72;
+}
+
+.badge.live::before {
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+.badge.peach {
+  background: var(--peach-soft);
+  color: var(--peach-text);
+}
+
+.badge.blue {
+  background: var(--blue);
+  color: var(--blue-text);
+}
+
+.badge.lavender {
+  background: var(--lavender);
+  color: var(--lavender-text);
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.35); }
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 680;
+}
+
+.tag.peach {
+  background: var(--peach-soft);
+  color: var(--peach-text);
+}
+
+.tag.blue {
+  background: var(--blue);
+  color: var(--blue-text);
+}
+
+.tag.lavender {
+  background: var(--lavender);
+  color: var(--lavender-text);
+}
+
+.tag.gold {
+  background: var(--gold);
+  color: var(--gold-text);
+}
+
+.avatar {
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 760;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.52);
+}
+
+.avatar.xl { width: 76px; height: 76px; font-size: 25px; }
+.avatar.lg { width: 58px; height: 58px; font-size: 20px; }
+.avatar.md { width: 46px; height: 46px; font-size: 16px; }
+.avatar.sm { width: 34px; height: 34px; font-size: 12px; }
+.avatar.xs { width: 25px; height: 25px; font-size: 10px; }
+
+.a1 { background: linear-gradient(135deg, #8AB39A, #DAB78A); }
+.a2 { background: linear-gradient(135deg, #88AFC0, #D9C4E6); }
+.a3 { background: linear-gradient(135deg, #E2A083, #96B9A0); }
+.a4 { background: linear-gradient(135deg, #C6B0DC, #7EA58B); }
+.a5 { background: linear-gradient(135deg, #DDB56A, #7F9FBD); }
+.a6 { background: linear-gradient(135deg, #A4BBD5, #E2B9A8); }
+
+.btn {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 15px;
+  padding: 0 14px;
+  cursor: default;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 760;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+.btn-quiet {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+.btn-round {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.button-row {
+  display: flex;
+  gap: 9px;
+}
+
+.button-row .btn {
+  flex: 1;
+}
+
+.bottom-nav {
+  height: 83px;
+  flex: 0 0 auto;
+  display: flex;
+  padding: 8px 8px 28px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 253, 248, 0.94);
+  backdrop-filter: blur(14px);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--faint);
+  font-size: 10px;
+  font-weight: 680;
+}
+
+.nav-item.active {
+  color: var(--green-dark);
+}
+
+.nav-item svg {
+  width: 23px;
+  height: 23px;
+}
+
+.progress {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(238, 231, 219, 0.86);
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--green);
+}
+
+/* Screen 1 */
+.setup-screen {
+  display: flex;
+  flex-direction: column;
+  padding-top: 13px;
+}
+
+.setup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2px 2px 28px;
+}
+
+.setup-head .step {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.setup-question {
+  padding: 0 5px;
+}
+
+.setup-question h2 {
+  max-width: 306px;
+  font-size: 26px;
+  line-height: 1.25;
+  font-weight: 780;
+  letter-spacing: 0;
+}
+
+.setup-question p {
+  max-width: 286px;
+  margin-top: 11px;
+}
+
+.calm-meter {
+  margin: 33px 0 18px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(234, 242, 234, 0.72), rgba(255, 253, 248, 0.82));
+}
+
+.meter-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.meter-curve {
+  position: relative;
+  height: 86px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(250, 246, 238, 0.82));
+  overflow: hidden;
+}
+
+.meter-curve svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.meter-dots {
+  position: absolute;
+  inset: 18px 22px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.meter-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  opacity: 0.65;
+}
+
+.meter-dots i:nth-child(2) { margin-bottom: 19px; background: var(--peach); }
+.meter-dots i:nth-child(3) { margin-bottom: 33px; background: #92AEBD; }
+.meter-dots i:nth-child(4) { margin-bottom: 15px; background: #C6B0DC; }
+.meter-dots i:nth-child(5) { margin-bottom: 41px; }
+
+.reply-dock {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.textarea-mock {
+  min-height: 118px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: #fff;
+  padding: 16px;
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+}
+
+.textarea-mock p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.dock-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* Screen 2 */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(225, 214, 199, 0.76);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(234, 242, 234, 0.9) 0%, rgba(255, 253, 248, 0.95) 54%, rgba(250, 237, 228, 0.88) 100%);
+  padding: 18px;
+}
+
+.home-hero h2 {
+  margin-top: 13px;
+  max-width: 256px;
+  font-size: 24px;
+  line-height: 1.22;
+  font-weight: 780;
+  letter-spacing: 0;
+}
+
+.home-hero p {
+  margin-top: 8px;
+  max-width: 270px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.hero-stat {
+  border: 1px solid rgba(238, 231, 219, 0.8);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.64);
+  padding: 11px 9px;
+}
+
+.hero-stat b {
+  display: block;
+  color: var(--green-dark);
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 820;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-stat span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 660;
+}
+
+.handoff-card {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.handoff-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.handoff-main strong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 780;
+}
+
+.handoff-main p {
+  margin-top: 6px;
+}
+
+.small-score {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-list {
+  display: grid;
+  gap: 8px;
+}
+
+.signal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: #fff;
+  padding: 11px 12px;
+}
+
+.signal svg {
+  flex: 0 0 auto;
+  color: var(--green-dark);
+}
+
+.signal div {
+  min-width: 0;
+}
+
+.signal strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.signal span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Screen 3 */
+.activity-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.activity-tile {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  padding: 13px;
+}
+
+.activity-tile b {
+  display: block;
+  color: var(--text);
+  font-size: 21px;
+  line-height: 1;
+  font-weight: 820;
+}
+
+.activity-tile span {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.timeline {
+  border-left: 1px solid var(--line-strong);
+  margin-left: 12px;
+  padding-left: 16px;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 0 0 16px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 4px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: -22px;
+  width: 11px;
+  height: 11px;
+  border: 3px solid var(--screen);
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 1px var(--line-strong);
+}
+
+.timeline-item.peach::before { background: var(--peach); }
+.timeline-item.blue::before { background: #8AA9B8; }
+.timeline-item.lavender::before { background: #B69CCC; }
+
+.timeline-item time {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-item strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 760;
+}
+
+.timeline-item p {
+  margin-top: 4px;
+}
+
+.quiet-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 13px;
+  margin-top: 14px;
+}
+
+.quiet-row strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+/* Screen 4 */
+.profile-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 3px 18px;
+}
+
+.profile-hero h2 {
+  font-size: 25px;
+  line-height: 1.12;
+  font-weight: 780;
+  letter-spacing: 0;
+}
+
+.profile-hero p {
+  margin-top: 6px;
+}
+
+.reason-card {
+  border-color: rgba(126, 165, 139, 0.28);
+  background:
+    linear-gradient(180deg, rgba(234, 242, 234, 0.72), rgba(255, 255, 255, 0.94));
+}
+
+.reason-list {
+  display: grid;
+  gap: 10px;
+}
+
+.reason {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.reason .num {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--green-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 820;
+  box-shadow: var(--shadow-soft);
+}
+
+.reason strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 760;
+}
+
+.reason span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.mini-transcript {
+  display: grid;
+  gap: 8px;
+}
+
+.bubble {
+  max-width: 86%;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: #fff;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.bubble.them {
+  margin-left: auto;
+  background: var(--green-soft);
+  border-color: rgba(126, 165, 139, 0.28);
+  color: var(--green-dark);
+}
+
+/* Screen 5 */
+.chat-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chat-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-person strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 780;
+}
+
+.chat-person span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 640;
+}
+
+.chat-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 0 12px;
+  scrollbar-width: none;
+}
+
+.chat-body::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-day {
+  margin: 2px auto 15px;
+  width: max-content;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--card-soft);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 680;
+}
+
+.message {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.message.me {
+  justify-content: flex-end;
+}
+
+.msg {
+  max-width: 248px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.46;
+}
+
+.me .msg {
+  border-color: rgba(126, 165, 139, 0.28);
+  background: var(--green-soft);
+  color: var(--green-dark);
+}
+
+.agent-note {
+  margin: 5px 0 13px 42px;
+  border-left: 2px solid var(--peach);
+  padding-left: 10px;
+  color: var(--peach-text);
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 640;
+}
+
+.composer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-top: 11px;
+  border-top: 1px solid var(--line);
+}
+
+.composer-pill {
+  min-width: 0;
+  flex: 1;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  padding: 0 13px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Screen 6 */
+.brief-date {
+  margin: 4px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 640;
+}
+
+.brief-hero {
+  background:
+    linear-gradient(180deg, rgba(221, 233, 238, 0.78), rgba(255, 253, 248, 0.94));
+}
+
+.brief-hero h2 {
+  margin-top: 12px;
+  font-size: 25px;
+  line-height: 1.18;
+  font-weight: 780;
+}
+
+.brief-chart {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  height: 116px;
+  margin-top: 18px;
+  padding: 0 3px;
+}
+
+.bar {
+  width: 32px;
+  min-height: 18px;
+  border-radius: 999px 999px 8px 8px;
+  background: var(--green);
+  opacity: 0.84;
+}
+
+.bar:nth-child(2) { height: 78px; background: #9AB6C2; }
+.bar:nth-child(1) { height: 48px; }
+.bar:nth-child(3) { height: 98px; background: #E1AD94; }
+.bar:nth-child(4) { height: 62px; background: #C5ABD6; }
+.bar:nth-child(5) { height: 86px; background: #D8B76D; }
+.bar:nth-child(6) { height: 42px; background: #8FAD9B; }
+
+.insight-list {
+  display: grid;
+  gap: 9px;
+}
+
+.insight {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  padding: 12px;
+}
+
+.insight-icon {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insight strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.insight span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* Screen 7 */
+.agent-card {
+  text-align: center;
+  padding: 20px 18px 18px;
+}
+
+.agent-card .avatar {
+  margin: 0 auto 12px;
+}
+
+.agent-card h2 {
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 780;
+}
+
+.agent-card p {
+  margin-top: 7px;
+}
+
+.trait-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.trait {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  padding: 12px;
+}
+
+.trait strong {
+  display: block;
+  color: var(--green-dark);
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 820;
+}
+
+.trait span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+  font-weight: 650;
+}
+
+.setting-list {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.setting-row {
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+}
+
+.setting-row + .setting-row {
+  border-top: 1px solid var(--line);
+}
+
+.setting-icon {
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
+  border-radius: 50%;
+  background: var(--green-soft);
+  color: var(--green-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.setting-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.setting-copy strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.setting-copy span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.switch {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 25px;
+  border-radius: 999px;
+  background: var(--green);
+  padding: 3px;
+}
+
+.switch i {
+  display: block;
+  width: 19px;
+  height: 19px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(47, 42, 37, 0.16);
+}
+
+.dial {
+  margin-top: 13px;
+}
+
+.dial-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 660;
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 34px 14px 56px;
+  }
+
+  .canvas-header h1 {
+    font-size: 30px;
+  }
+
+  .reference-strip {
+    border-radius: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .phone {
+    width: min(375px, calc(100vw - 34px));
+    height: min(812px, calc((100vw - 34px) * 2.165));
+    min-height: 720px;
+  }
+}
+</style>
+</head>
+<body>
+  <header class="canvas-header">
+    <div class="eyebrow">healing prototype</div>
+    <h1>Neolink App Prototype</h1>
+    <p>参考现有草图的轻线条、留白和圆润卡片节奏，重绘一组更简约、安静、治愈的移动端核心流程。</p>
+    <div class="reference-strip" aria-label="参考素材">
+      <span class="reference-thumb one"></span>
+      <span class="reference-thumb two"></span>
+      <span class="reference-thumb three"></span>
+      <span>reference: copy-prototype</span>
+    </div>
+  </header>
+
+  <main class="canvas">
+    <section class="artboard">
+      <div class="artboard-label"><span>1</span>Gentle Agent Setup</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen no-scroll setup-screen">
+          <div class="setup-head">
+            <button class="icon-btn" aria-label="返回">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <span class="step">2 / 6</span>
+          </div>
+
+          <div class="setup-question">
+            <span class="badge peach">Agent 语气</span>
+            <h2>你希望 Agent 用什么节奏认识新朋友？</h2>
+            <p class="caption">选择一个舒服的社交速度，之后可以随时调整。</p>
+          </div>
+
+          <div class="calm-meter">
+            <div class="meter-top">
+              <span>社交能量</span>
+              <span class="muted">温和探索</span>
+            </div>
+            <div class="meter-curve" aria-hidden="true">
+              <svg viewBox="0 0 280 86" preserveAspectRatio="none">
+                <path d="M8 63 C58 27 86 72 130 42 C169 15 190 47 222 25 C244 10 260 22 272 14" fill="none" stroke="#7EA58B" stroke-width="3" stroke-linecap="round" opacity=".72"/>
+                <path d="M8 68 C58 33 87 77 130 49 C170 23 190 52 222 33 C244 20 260 31 272 25" fill="none" stroke="#E2A083" stroke-width="2" stroke-linecap="round" opacity=".32"/>
+              </svg>
+              <div class="meter-dots">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="tag-row">
+            <span class="tag">慢慢来</span>
+            <span class="tag peach">先找共同点</span>
+            <span class="tag blue">不要高频打扰</span>
+            <span class="tag lavender">适合深聊</span>
+          </div>
+
+          <div class="reply-dock">
+            <div class="textarea-mock">
+              <p>我希望它先观察共同兴趣，再自然打开话题。不要太像销售，也不要太热情。</p>
+            </div>
+            <div class="dock-actions">
+              <span class="micro">已学习 4 条偏好</span>
+              <button class="btn btn-primary">
+                <span>继续</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>2</span>Today Home</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="topbar">
+            <div class="brand">Neolink<span class="dot"></span></div>
+            <button class="icon-btn" aria-label="通知">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M10 21h4"/></svg>
+            </button>
+          </div>
+
+          <div class="home-hero">
+            <span class="badge live">Agent 在线</span>
+            <h2>今晚有两个值得你亲自接管的人。</h2>
+            <p class="caption">Agent 已完成前置破冰，只把高信号会话留给你。</p>
+            <div class="hero-stats">
+              <div class="hero-stat"><b>6</b><span>今日会话</span></div>
+              <div class="hero-stat"><b>2</b><span>待接管</span></div>
+              <div class="hero-stat"><b>91</b><span>最高契合</span></div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <span>最适合现在接管</span>
+            <span class="micro">21:12 更新</span>
+          </div>
+          <div class="card handoff-card">
+            <div class="avatar lg a2">M</div>
+            <div class="handoff-main">
+              <strong>Mira <span class="small-score">91%</span></strong>
+              <p class="caption">慢跑、纪录片、一个人住的节奏。Agent 判断可以从周末路线聊起。</p>
+              <div class="tag-row" style="margin-top:10px;">
+                <span class="tag blue">纪录片</span>
+                <span class="tag">长跑</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <span>今天的新信号</span>
+            <span class="micro">3 条</span>
+          </div>
+          <div class="signal-list">
+            <div class="signal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg>
+              <div>
+                <strong>慢热偏好被确认</strong>
+                <span>3 次高质量会话都从低压力话题开始。</span>
+              </div>
+            </div>
+            <div class="signal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m8 15 3-4 3 2 4-6"/></svg>
+              <div>
+                <strong>深聊话题表现更好</strong>
+                <span>长期项目、城市生活、创作习惯更容易延续。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <div class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9.5Z"/></svg>
+            <span>首页</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.7 12h6.6" stroke-dasharray="2 2"/></svg>
+            <span>Agent</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+            <span>消息</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>我的</span>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>3</span>Agent Activity</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="topbar">
+            <span class="page-title">Agent 活动</span>
+            <button class="icon-btn" aria-label="筛选">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg>
+            </button>
+          </div>
+
+          <div class="activity-summary">
+            <div class="activity-tile"><b>12</b><span>自动破冰轮次</span></div>
+            <div class="activity-tile"><b>4.7h</b><span>安静运行时间</span></div>
+            <div class="activity-tile"><b>78%</b><span>平均契合度</span></div>
+            <div class="activity-tile"><b>3</b><span>已礼貌结束</span></div>
+          </div>
+
+          <div class="card flat">
+            <div class="section-title" style="margin-top:0;">
+              <span>今天的轨迹</span>
+              <span class="badge live">运行中</span>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item blue">
+                <time>20:48</time>
+                <strong>和 Mira 的 Agent 完成第 9 轮对话</strong>
+                <p class="caption">共同主题从跑步扩展到纪录片和城市路线。</p>
+              </div>
+              <div class="timeline-item peach">
+                <time>20:12</time>
+                <strong>跳过一段过度高频的会话</strong>
+                <p class="caption">对方 Agent 回复节奏过快，已降低后续匹配权重。</p>
+              </div>
+              <div class="timeline-item">
+                <time>19:36</time>
+                <strong>发现一个新的稳定话题</strong>
+                <p class="caption">"长期项目" 相关会话更容易进入真实表达。</p>
+              </div>
+              <div class="timeline-item lavender">
+                <time>18:20</time>
+                <strong>整理你的表达边界</strong>
+                <p class="caption">Agent 避免代你表达亲密承诺，只保留轻量引导。</p>
+              </div>
+            </div>
+            <div class="quiet-row">
+              <div>
+                <strong>自主社交</strong>
+                <span class="micro">保持低打扰模式</span>
+              </div>
+              <span class="badge">正常</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9.5Z"/></svg>
+            <span>首页</span>
+          </div>
+          <div class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.7 12h6.6" stroke-dasharray="2 2"/></svg>
+            <span>Agent</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+            <span>消息</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>我的</span>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>4</span>Handoff Detail</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="topbar">
+            <button class="icon-btn" aria-label="返回">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <span class="page-title sm">接管建议</span>
+            <button class="icon-btn" aria-label="更多">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+          </div>
+
+          <div class="profile-hero">
+            <div class="avatar xl a2">M</div>
+            <div>
+              <span class="badge blue">91% 契合</span>
+              <h2>Mira</h2>
+              <p class="caption">纽约 · 产品设计 · 夜跑</p>
+            </div>
+          </div>
+
+          <div class="card reason-card">
+            <div class="section-title" style="margin-top:0;">
+              <span>为什么适合接管</span>
+              <span class="micro">Agent 总结</span>
+            </div>
+            <div class="reason-list">
+              <div class="reason">
+                <span class="num">1</span>
+                <div>
+                  <strong>你们都偏好低压力开场</strong>
+                  <span>双方 Agent 都主动避开了高频寒暄。</span>
+                </div>
+              </div>
+              <div class="reason">
+                <span class="num">2</span>
+                <div>
+                  <strong>共同话题能自然延展</strong>
+                  <span>从纪录片聊到城市路径，再到独处节奏。</span>
+                </div>
+              </div>
+              <div class="reason">
+                <span class="num">3</span>
+                <div>
+                  <strong>对方愿意进入真人对话</strong>
+                  <span>Mira 的 Agent 已确认她今晚有空。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <span>会话高光</span>
+            <span class="micro">节选</span>
+          </div>
+          <div class="mini-transcript">
+            <div class="bubble">我们都觉得城市里最放松的时刻，是路线熟到不用看导航。</div>
+            <div class="bubble them">她说夜跑不是为了健身，更像是给一天做一个温柔的收尾。</div>
+          </div>
+
+          <div class="button-row" style="margin-top:16px;">
+            <button class="btn btn-primary">接管聊天</button>
+            <button class="btn btn-secondary">再聊一会</button>
+          </div>
+          <button class="btn btn-quiet" style="width:100%; margin-top:9px;">暂时跳过</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>5</span>Messages With Assist</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen no-scroll chat-screen">
+          <div class="chat-top">
+            <div class="chat-person">
+              <div class="avatar sm a2">M</div>
+              <div>
+                <strong>Mira</strong>
+                <span>Agent 已退到后台</span>
+              </div>
+            </div>
+            <button class="icon-btn soft" aria-label="Agent 建议">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="m5.6 5.6 2.1 2.1"/><path d="m16.3 16.3 2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m5.6 18.4 2.1-2.1"/><path d="m16.3 7.7 2.1-2.1"/><circle cx="12" cy="12" r="3.3"/></svg>
+            </button>
+          </div>
+
+          <div class="chat-body">
+            <div class="chat-day">今天 21:24</div>
+            <div class="message">
+              <div class="avatar xs a2">M</div>
+              <div class="msg">你的 Agent 说你也会在晚上跑步。我一般跑河边那条线，会比较安静。</div>
+            </div>
+            <div class="agent-note">建议回应路线感受，再自然问她最近喜欢的纪录片。</div>
+            <div class="message me">
+              <div class="msg">我懂那种感觉。熟悉路线会让人放松，像是给一天留一个缓冲区。</div>
+            </div>
+            <div class="message">
+              <div class="avatar xs a2">M</div>
+              <div class="msg">对，我喜欢这个说法。你最近有看什么适合晚上看的片子吗？</div>
+            </div>
+            <div class="message me">
+              <div class="msg">最近看了一部讲城市声音的纪录片，不热闹，但很适合散步之后看。</div>
+            </div>
+            <div class="message">
+              <div class="avatar xs a2">M</div>
+              <div class="msg">听起来很对我的胃口。片名是什么？</div>
+            </div>
+          </div>
+
+          <div class="composer">
+            <div class="composer-pill">输入消息...</div>
+            <button class="btn btn-primary btn-round" aria-label="发送">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14-7-7 14-2-5-5-2Z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>6</span>Daily Brief</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="topbar">
+            <span class="page-title">今日摘要</span>
+            <button class="icon-btn" aria-label="分享">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/></svg>
+            </button>
+          </div>
+          <div class="brief-date">5 月 16 日 · 晚间</div>
+
+          <div class="card brief-hero">
+            <span class="badge blue">安静完成</span>
+            <h2>你的 Agent 今天替你筛掉了大部分低信号会话。</h2>
+            <div class="brief-chart" aria-hidden="true">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <span>值得记住</span>
+            <span class="micro">3 条</span>
+          </div>
+          <div class="insight-list">
+            <div class="insight">
+              <span class="insight-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7 9 18l-5-5"/></svg>
+              </span>
+              <div>
+                <strong>低频但具体的开场更有效</strong>
+                <span>围绕真实生活节奏的回复率更高。</span>
+              </div>
+            </div>
+            <div class="insight">
+              <span class="insight-icon" style="background:var(--peach-soft); color:var(--peach-text);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </span>
+              <div>
+                <strong>Agent 新增了一条表达边界</strong>
+                <span>不替你承诺见面，只提供轻量邀约建议。</span>
+              </div>
+            </div>
+            <div class="insight">
+              <span class="insight-icon" style="background:var(--lavender); color:var(--lavender-text);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z"/></svg>
+              </span>
+              <div>
+                <strong>Mira 会话建议继续</strong>
+                <span>她的回复节奏和话题深度与你匹配。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9.5Z"/></svg>
+            <span>首页</span>
+          </div>
+          <div class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.7 12h6.6" stroke-dasharray="2 2"/></svg>
+            <span>Agent</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+            <span>消息</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>我的</span>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <section class="artboard">
+      <div class="artboard-label"><span>7</span>Agent Profile</div>
+      <div class="phone">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="right">
+            <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect y="7" width="3" height="4" rx=".5"/><rect x="5" y="5" width="3" height="6" rx=".5"/><rect x="10" y="2.5" width="3" height="8.5" rx=".5"/><rect x="15" width="3" height="11" rx=".5"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><path d="M8 0a11 11 0 0 1 7.7 3.1.5.5 0 0 1-.7.7L8 6 .3 3.8a.5.5 0 0 1-.4-.7A11 11 0 0 1 8 0Z"/><circle cx="8" cy="9" r="1.5"/></svg>
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="2.8" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="18" height="8" rx="1.6" fill="currentColor"/><rect x="23.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+
+        <div class="screen">
+          <div class="topbar">
+            <span class="page-title">我的 Agent</span>
+            <button class="icon-btn" aria-label="编辑">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+          </div>
+
+          <div class="card agent-card">
+            <div class="avatar xl a1">Y</div>
+            <h2>Yihua 的 Agent</h2>
+            <p class="caption">慢热、具体、不过度替你表达。</p>
+            <div class="tag-row" style="margin-top:14px; justify-content:center;">
+              <span class="tag">低打扰</span>
+              <span class="tag peach">真诚</span>
+              <span class="tag blue">深聊</span>
+            </div>
+          </div>
+
+          <div class="section-title">
+            <span>人设强度</span>
+            <span class="micro">可调</span>
+          </div>
+          <div class="trait-grid">
+            <div class="trait"><strong>72</strong><span>主动探索</span></div>
+            <div class="trait"><strong>88</strong><span>边界感</span></div>
+            <div class="trait"><strong>64</strong><span>幽默感</span></div>
+            <div class="trait"><strong>93</strong><span>具体表达</span></div>
+          </div>
+
+          <div class="section-title">
+            <span>隐私与自主性</span>
+            <span class="micro">低风险</span>
+          </div>
+          <div class="setting-list">
+            <div class="setting-row">
+              <span class="setting-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+              </span>
+              <div class="setting-copy">
+                <strong>敏感信息保护</strong>
+                <span>不透露电话、住址和真实行程。</span>
+              </div>
+              <span class="switch"><i></i></span>
+            </div>
+            <div class="setting-row">
+              <span class="setting-icon" style="background:var(--peach-soft); color:var(--peach-text);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </span>
+              <div class="setting-copy">
+                <strong>禁止高压邀约</strong>
+                <span>接管前不主动提出线下见面。</span>
+              </div>
+              <span class="switch"><i></i></span>
+            </div>
+          </div>
+
+          <div class="soft-panel dial">
+            <div class="section-title" style="margin-top:0;">
+              <span>自主运行程度</span>
+              <span class="badge">温和</span>
+            </div>
+            <div class="progress"><span style="width:64%;"></span></div>
+            <div class="dial-labels">
+              <span>安静</span>
+              <span>平衡</span>
+              <span>积极</span>
+            </div>
+          </div>
+        </div>
+
+        <nav class="bottom-nav">
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9.5Z"/></svg>
+            <span>首页</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="12" r="2.6"/><path d="M8.7 12h6.6" stroke-dasharray="2 2"/></svg>
+            <span>Agent</span>
+          </div>
+          <div class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+            <span>消息</span>
+          </div>
+          <div class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>我的</span>
+          </div>
+        </nav>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
