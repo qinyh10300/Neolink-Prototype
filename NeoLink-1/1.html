@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>NeoLink · 对话主页</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, "PingFang SC", sans-serif;
+    background: #ececec;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+  .phone {
+    width: 360px;
+    height: 760px;
+    background: #fff;
+    border-radius: 42px;
+    border: 2px solid #1f1f1f;
+    padding: 14px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  }
+  .notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 22px;
+    background: #1f1f1f;
+    border-radius: 0 0 14px 14px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px;
+  }
+  .notch::before { content: ""; width: 38px; height: 5px; background: #444; border-radius: 4px; }
+  .notch::after  { content: ""; width: 8px;  height: 8px; background: #333; border-radius: 50%; }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    padding-top: 36px;
+  }
+  .brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 44px;
+    text-align: center;
+    margin: 10px 0 14px;
+    color: #111;
+  }
+  .chat {
+    flex: 1;
+    padding: 6px 18px 8px;
+    overflow-y: auto;
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .row { display: flex; }
+  .row.left  { justify-content: flex-start; }
+  .row.right { justify-content: flex-end; }
+  .bubble {
+    max-width: 78%;
+    padding: 9px 14px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    border-radius: 16px;
+  }
+  .bubble.left {
+    background: #f1f1f1;
+    color: #444;
+  }
+  .bubble.right {
+    background: #1f1f1f;
+    color: #fff;
+  }
+  .input-bar {
+    margin: 6px 14px 8px;
+    height: 36px;
+    border-radius: 18px;
+    background: #f3f3f3;
+    display: flex; align-items: center;
+    padding: 0 14px;
+    color: #aaa;
+    font-size: 12px;
+    justify-content: space-between;
+  }
+  .send {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #1f1f1f;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .tabbar {
+    height: 56px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #b9b9b9;
+  }
+  .tab.active { color: #2f9466; }
+  .tab .icon { font-size: 18px; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="brand">Neolink</div>
+      <div class="chat">
+        <div class="row left"><div class="bubble left">哪一段孤独的时光，反而让你感到前所未有的完整？</div></div>
+        <div class="row right"><div class="bubble right">每一段孤独的时光，都让我感到前所未有的完整</div></div>
+
+        <div class="row left"><div class="bubble left">哪一段孤独的时光，反而让你感到前所未有的完整？</div></div>
+        <div class="row right"><div class="bubble right">每一段孤独的时光，都让我感到前所未有的完整</div></div>
+
+        <div class="row left"><div class="bubble left">哪一段孤独的时光，反而让你感到前所未有的完整？</div></div>
+        <div class="row right"><div class="bubble right">每一段孤独的时光，都让我感到前所未有的完整</div></div>
+
+        <div class="row left"><div class="bubble left">哪一段孤独的时光，反而让你感到前所未有的完整？</div></div>
+        <div class="row right"><div class="bubble right">每一段孤独的时光，都让我感到前所未有的完整</div></div>
+
+        <div class="row left"><div class="bubble left">哪一段孤独的时光，反而让你感到前所未有的完整？</div></div>
+        <div class="row right"><div class="bubble right">每一段孤独的时光，都让我感到前所未有的完整</div></div>
+      </div>
+      <div class="input-bar">
+        <span>聊得越多 匹配越精准</span>
+        <span class="send">↑</span>
+      </div>
+      <div class="tabbar">
+        <div class="tab active"><span class="icon">⌂</span><span>首页</span></div>
+        <div class="tab"><span class="icon">○</span><span>消息</span></div>
+        <div class="tab"><span class="icon">◔</span><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

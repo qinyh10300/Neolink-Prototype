@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>NeoLink · Agent Memory 详情</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, "PingFang SC", sans-serif;
+    background: #ececec;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+  .phone {
+    width: 360px; height: 760px;
+    background: #fff;
+    border-radius: 42px;
+    border: 2px solid #1f1f1f;
+    padding: 14px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  }
+  .notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 22px;
+    background: #1f1f1f;
+    border-radius: 0 0 14px 14px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px;
+  }
+  .notch::before { content: ""; width: 38px; height: 5px; background: #444; border-radius: 4px; }
+  .notch::after  { content: ""; width: 8px;  height: 8px; background: #333; border-radius: 50%; }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 30px;
+    display: flex; flex-direction: column;
+    padding-top: 36px;
+    overflow: hidden;
+  }
+  .back-row {
+    padding: 10px 18px 4px;
+    font-size: 26px;
+    color: #111;
+  }
+  .title {
+    padding: 6px 22px 14px;
+    font-size: 22px;
+    color: #111;
+    font-weight: 500;
+  }
+  .section {
+    padding: 14px 22px;
+    border-top: 1px solid #ececec;
+    font-size: 13px;
+    color: #2a2a2a;
+    line-height: 1.55;
+    text-align: center;
+  }
+  .body {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .tabbar {
+    height: 56px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #b9b9b9;
+  }
+  .tab.active { color: #2f9466; }
+  .tab .icon { font-size: 18px; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="back-row">‹</div>
+      <div class="title">QYH's&nbsp;&nbsp;Agent&nbsp;&nbsp;Memory</div>
+      <div class="body">
+        <div class="section">
+          the layout should look similar to tthe layout should look similar to the interfact of imessagethe layout should look similarthe layout should look similar to the interfact of imessagethe layout should look similar to the interfact of imessage to the interfact of imessagethe layout should look similar to the int
+        </div>
+        <div class="section">
+          the layout should look similar to tthe layout should look similar to the interfact of imessagethe layout should look similarthe layout should look similar to the interfact of imessagethe layout should look similar to the interfact of imessage to the interfact of imessagethe layout should look similar to the int
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab active"><span class="icon">⌂</span><span>首页</span></div>
+        <div class="tab"><span class="icon">○</span><span>消息</span></div>
+        <div class="tab"><span class="icon">◔</span><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

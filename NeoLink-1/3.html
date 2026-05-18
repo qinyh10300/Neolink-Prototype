@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>NeoLink · 列表</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #ececec;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+  .phone {
+    width: 360px; height: 760px;
+    background: #fff;
+    border-radius: 42px;
+    border: 2px solid #1f1f1f;
+    padding: 14px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+  }
+  .notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 22px;
+    background: #1f1f1f;
+    border-radius: 0 0 14px 14px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 28px;
+  }
+  .notch::before { content: ""; width: 38px; height: 5px; background: #444; border-radius: 4px; }
+  .notch::after  { content: ""; width: 8px;  height: 8px; background: #333; border-radius: 50%; }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 30px;
+    display: flex; flex-direction: column;
+    padding-top: 36px;
+    overflow: hidden;
+  }
+  .brand {
+    font-family: 'Dancing Script', cursive;
+    font-size: 40px;
+    text-align: center;
+    margin: 6px 0 10px;
+    color: #111;
+  }
+  .list {
+    flex: 1;
+    overflow-y: auto;
+    border-top: 1px solid #eee;
+  }
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid #f1f1f1;
+    gap: 14px;
+  }
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .a1 { background: linear-gradient(135deg, #ffd6e0, #fff1c1); }
+  .a2 { background: linear-gradient(135deg, #ffd9e6, #ffe7cf); }
+  .a3 { background: linear-gradient(135deg, #fff0d0, #ffd6e6); }
+  .a4 { background: linear-gradient(135deg, #ff8aa0, #ffc56b); }
+  .a5 { background: linear-gradient(135deg, #ff8aa0, #ffb060); }
+  .a6 { background: linear-gradient(135deg, #ff7a8e, #ffae5e); }
+  .a7 { background: linear-gradient(135deg, #ff8c9e, #ffba6a); }
+  .a8 { background: linear-gradient(135deg, #ff8c9e, #ffc972); }
+  .text {
+    flex: 1;
+    font-size: 13px;
+    color: #2a2a2a;
+  }
+  .date {
+    font-size: 12px;
+    color: #6e6e6e;
+  }
+  .tabbar {
+    height: 56px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #b9b9b9;
+  }
+  .tab.active { color: #2f9466; }
+  .tab .icon { font-size: 18px; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="brand">Neolink</div>
+      <div class="list">
+        <div class="item"><div class="avatar a1"></div><div class="text">Your paragraph text</div><div class="date">2026/05/02</div></div>
+        <div class="item"><div class="avatar a2"></div><div class="text">Your paragraph text</div><div class="date">2026/05/02</div></div>
+        <div class="item"><div class="avatar a3"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+        <div class="item"><div class="avatar a4"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+        <div class="item"><div class="avatar a5"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+        <div class="item"><div class="avatar a6"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+        <div class="item"><div class="avatar a7"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+        <div class="item"><div class="avatar a8"></div><div class="text">Your paragraph text</div><div class="date">2026/05/01</div></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab active"><span class="icon">⌂</span><span>首页</span></div>
+        <div class="tab"><span class="icon">○</span><span>消息</span></div>
+        <div class="tab"><span class="icon">◔</span><span>我的</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
