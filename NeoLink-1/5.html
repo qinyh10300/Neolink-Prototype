@@ -48,24 +48,89 @@
     padding: 14px 22px 14px;
     gap: 18px;
   }
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
   .avatar-big {
     width: 64px; height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, #ff8aa0 0%, #ffc56b 80%);
-    flex-shrink: 0;
+  }
+  .edit-badge {
+    position: absolute;
+    right: -2px; bottom: -2px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    color: #555;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
   }
   .top-right {
+    flex: 1;
     display: flex; flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
   .top-right .title {
     font-size: 14px;
     color: #111;
     font-weight: 500;
   }
+  .name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
   .top-right .name {
     font-size: 14px;
     color: #111;
+  }
+  .settings-btn {
+    font-size: 11px;
+    color: #555;
+    background: #f5f5f5;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 3px 10px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .settings-btn:hover { background: #eee; }
+  .action-row {
+    padding: 4px 22px 14px;
+  }
+  .memory-setting-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #ff8aa0 0%, #ffc56b 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(255,138,160,0.18);
+  }
+  .memory-setting-btn .left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .memory-setting-btn .icon-box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
   }
   .card {
     display: flex;
@@ -100,7 +165,6 @@
   .body {
     flex: 1;
     padding: 14px 22px;
-    border-top: 1px solid #ececec;
     overflow-y: auto;
     font-size: 12.5px;
     color: #2a2a2a;
@@ -129,11 +193,26 @@
     <div class="notch"></div>
     <div class="screen">
       <div class="top">
-        <div class="avatar-big"></div>
+        <div class="avatar-wrap">
+          <div class="avatar-big"></div>
+          <div class="edit-badge" title="更换头像">✎</div>
+        </div>
         <div class="top-right">
           <div class="title">Your Agent Memory</div>
-          <div class="name">QYH</div>
+          <div class="name-row">
+            <span class="name">QYH</span>
+            <button class="settings-btn">⚙ 编辑资料</button>
+          </div>
         </div>
+      </div>
+      <div class="action-row">
+        <button class="memory-setting-btn">
+          <span class="left">
+            <span class="icon-box">✦</span>
+            <span>设置 Agent Memory 信息</span>
+          </span>
+          <span>›</span>
+        </button>
       </div>
       <div class="card">
         <div class="person">
