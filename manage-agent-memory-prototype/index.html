@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neolink Agent Memory Prototype</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" aria-label="管理 Agent 记忆原型">
+      <div class="notch" aria-hidden="true"></div>
+      <div class="screen">
+        <header class="topbar">
+          <button class="icon-button back" type="button" aria-label="返回" title="返回"></button>
+          <h1>管理你的社交Agent</h1>
+          <button class="icon-button save" type="button" aria-label="保存" title="保存"></button>
+        </header>
+
+        <nav class="layer-tabs" aria-label="Agent 记忆层切换" role="tablist"></nav>
+
+        <section class="memory-page" aria-live="polite">
+          <div class="layer-head">
+            <div>
+              <span class="layer-count"></span>
+              <h2></h2>
+            </div>
+            <div class="quality">
+              <span class="quality-score"></span>
+              <small>可信度</small>
+            </div>
+          </div>
+
+          <p class="layer-summary"></p>
+
+          <div class="meta-row">
+            <span class="meta-pill updated"></span>
+            <span class="meta-pill visibility"></span>
+          </div>
+
+          <label class="field-block">
+            <span>核心记忆</span>
+            <textarea spellcheck="false"></textarea>
+          </label>
+
+          <section class="detail-stack" aria-label="记忆条目"></section>
+        </section>
+
+        <nav class="tabbar" aria-label="底部导航">
+          <button class="tab active" type="button" aria-label="首页">
+            <span class="tab-icon home" aria-hidden="true"></span>
+            <span>首页</span>
+          </button>
+          <button class="tab" type="button" aria-label="消息">
+            <span class="tab-icon chat" aria-hidden="true"></span>
+            <span>消息</span>
+          </button>
+          <button class="tab" type="button" aria-label="我的">
+            <span class="tab-icon user" aria-hidden="true"></span>
+            <span>我的</span>
+          </button>
+        </nav>
+
+        <div class="toast" role="status">已保存</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
